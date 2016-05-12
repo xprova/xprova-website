@@ -1,0 +1,308 @@
+<!doctype html>
+<!--
+Material Design Lite
+Copyright 2015 Google Inc. All rights reserved.
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+https://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="an EDA tool for clock domain crossing verification">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>xprova</title>
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Material Design Lite">
+    <link rel="apple-touch-icon-precomposed" href="images/ios-desktop.png">
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
+    <meta name="msapplication-TileColor" content="#3372DF">
+    <!-- SEO: If your mobile URL is different from the desktop URL, add a canonical link to the desktop page https://developers.google.com/webmasters/smartphone-sites/feature-phones -->
+    <!--
+    <link rel="canonical" href="http://www.example.com/">
+    -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.teal-red.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/mystyle.css">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+  </head>
+  <body>
+    <div class="demo-layout mdl-layout mdl-layout--fixed-header mdl-js-layout mdl-color--grey-100">
+      <div class="demo-ribbon"></div>
+      <main class="demo-main mdl-layout__content">
+      <div class="demo-container mdl-grid">
+        <div class="mdl-cell mdl-cell--2-col mdl-cell--hide-tablet mdl-cell--hide-phone"></div>
+        <div class="demo-content mdl-color--white mdl-shadow--4dp content mdl-color-text--grey-800 mdl-cell mdl-cell--8-col">
+           <center>
+          <h3 style='display: inline;'>xprova</h3>
+          <h3 style='display: inline; margin-left: 0px; color: gray; font-size: 20px; font-family: "Open Sans", sans-serif;'> - an EDA tool for clock domain crossing verification</h3>
+          <div style='display: block; height: 40px;'></div>
+
+            <button class="mdl-button mdl-js-button" onclick="location.href='overview';">
+              Overview
+            </button>
+            -
+            <button class="mdl-button mdl-js-button" onclick="location.href='formal';">
+              Formal Verification
+            </button>
+            -
+            <button class="mdl-button mdl-js-button" onclick="location.href='example';">
+              Case Example
+            </button>
+            -
+            <button class="mdl-button mdl-js-button" onclick="location.href='contact';">
+              Contact
+            </button>
+          </center>
+          <h4 id="case-example-senderreceiver-circuit">Case Example: <em>Sender/Receiver Circuit</em></h4>
+          <p>The following circuit is used to demonstrate how xprova works.</p>
+          <p><img src='../figures/fig_circuit.svg' style='width: 100%;'/></p>
+          <p>This is a simple sender/receiver circuit that transfers a data item across a clock domain boundary using a handshake. The circuit works as follows:</p>
+          <ol style="list-style-type: decimal">
+          <li>A data item is made available on <code>data_in</code> and <code>send</code> is asserted.</li>
+          <li><code>busy</code> is asserted and the sender (clock domain 1) initiates the handshake.</li>
+          <li>The receiver (clock domain 2) latches the data item and asserts <code>valid</code> to indicate that <code>data_out</code> contains a data item.</li>
+          <li>The handshake completes the sender de-asserts <code>busy</code>.</li>
+          </ol>
+          <p>We wrote three SystemVerilog assertions to verify that this circuit works correctly:</p>
+          <ol style="list-style-type: decimal">
+          <li><code>as_correct_transfer</code>: when <code>valid</code> is asserted, the received item equals the sent item.</li>
+          <li><code>as_no_blocked_transfer</code>: if <code>send</code> is asserted then <code>valid</code> must be asserted afterwards (in finite time).</li>
+          <li><code>as_sender_handshake</code>: if <code>send</code> is asserted, <code>busy</code> must be asserted on the following cycle.</li>
+          </ol>
+          <h4 id="verification-results">Verification Results</h4>
+          <p>We ran a series of formal verification runs to determine whether the augmented netlist generated by xprova can reproduce the CDC errors we know exist from theory and (equally important) function correctly when no CDC issues are present. For each verification run we tested whether any of the assertions we specified can be violated. The results for both source and augmented netlists are tabulated below (alongside what we know from theory).</p>
+          <center>
+          <table class="mytable  mdl-shadow--2dp">
+          <tr>
+          <th>
+          Synchronizer(s)
+          </th>
+          <th>
+          Assertion
+          </th>
+          <th style="width: 20%;">
+          Source Netlist
+          </th>
+          <th style="width: 20%;">
+          Augmented Netlist
+          </th>
+          <th style="width: 20%;">
+          Theory
+          </th>
+          </tr>
+          <tr>
+          <td rowspan="3">
+          None
+          </td>
+          <td>
+          <code>as_correct_transfer</code>
+          </td>
+          <td>
+          <span class="pass">PASS</span>
+          </td>
+          <td>
+          <span class="fail">FAIL</span>
+          </td>
+          <td>
+          <span class="fail">FAIL</span>
+          </td>
+          </tr>
+          <tr>
+          <td>
+          <code>as_no_blocked_transfer</code>
+          </td>
+          <td>
+          <span class="pass">PASS</span>
+          </td>
+          <td>
+          <span class="fail">FAIL</span>
+          </td>
+          <td>
+          <span class="fail">FAIL</span>
+          </td>
+          </tr>
+          <tr>
+          <td>
+          <code>as_sender_handshake</code>
+          </td>
+          <td>
+          <span class="pass">PASS</span>
+          </td>
+          <td>
+          <span class="fail">FAIL</span>
+          </td>
+          <td>
+          <span class="fail">FAIL</span>
+          </td>
+          </tr>
+          <tr>
+          <td rowspan="3">
+          Sender Only
+          </td>
+          <td>
+          <code>as_correct_transfer</code>
+          </td>
+          <td>
+          <span class="pass">PASS</span>
+          </td>
+          <td>
+          <span class="fail">FAIL</span>
+          </td>
+          <td>
+          <span class="fail">FAIL</span>
+          </td>
+          </tr>
+          <tr>
+          <td>
+          <code>as_no_blocked_transfer</code>
+          </td>
+          <td>
+          <span class="pass">PASS</span>
+          </td>
+          <td>
+          <span class="pass">PASS</span>
+          </td>
+          <td>
+          <span class="pass">PASS</span>
+          </td>
+          </tr>
+          `
+          <tr>
+          <td>
+          <code>as_sender_handshake</code>
+          </td>
+          <td>
+          <span class="pass">PASS</span>
+          </td>
+          <td>
+          <span class="fail">FAIL</span>
+          </td>
+          <td>
+          <span class="fail">FAIL</span>
+          </td>
+          </tr>
+          <tr>
+          <td rowspan="3">
+          Receiver Only
+          </td>
+          <td>
+          <code>as_correct_transfer</code>
+          </td>
+          <td>
+          <span class="pass">PASS</span>
+          </td>
+          <td>
+          <span class="fail">FAIL</span>
+          </td>
+          <td>
+          <span class="fail">FAIL</span>
+          </td>
+          </tr>
+          <tr>
+          <td>
+          <code>as_no_blocked_transfer</code>
+          </td>
+          <td>
+          <span class="pass">PASS</span>
+          </td>
+          <td>
+          <span class="fail">FAIL</span>
+          </td>
+          <td>
+          <span class="fail">FAIL</span>
+          </td>
+          </tr>
+          <tr>
+          <td>
+          <code>as_sender_handshake</code>
+          </td>
+          <td>
+          <span class="pass">PASS</span>
+          </td>
+          <td>
+          <span class="fail">FAIL</span>
+          </td>
+          <td>
+          <span class="fail">FAIL</span>
+          </td>
+          </tr>
+          <tr>
+          <td rowspan="3">
+          Both
+          </td>
+          <td>
+          <code>as_correct_transfer</code>
+          </td>
+          <td>
+          <span class="pass">PASS</span>
+          </td>
+          <td>
+          <span class="pass">PASS</span>
+          </td>
+          <td>
+          <span class="pass">PASS</span>
+          </td>
+          </tr>
+          <tr>
+          <td>
+          <code>as_no_blocked_transfer</code>
+          </td>
+          <td>
+          <span class="pass">PASS</span>
+          </td>
+          <td>
+          <span class="pass">PASS</span>
+          </td>
+          <td>
+          <span class="pass">PASS</span>
+          </td>
+          </tr>
+          <tr>
+          <td>
+          <code>as_sender_handshake</code>
+          </td>
+          <td>
+          <span class="pass">PASS</span>
+          </td>
+          <td>
+          <span class="pass">PASS</span>
+          </td>
+          <td>
+          <span class="pass">PASS</span>
+          </td>
+          </tr>
+          </table>
+          </center>
+          <p>In short, running formal verification on the source netlist resulted in all assertions receiving a <span class="pass">PASS</span> status whether synchronizers were present or not. <em>This is of course incorrect</em> (we know from theory that the lack of a receiver synchronizer, for one, can cause data corruption and hence violations of <code>as_correct_transfer</code>). On the other hand, formal verification results on the augmented netlist were identical to what we know theoretically.</p>
+          <p>Note that although the lack of one or both synchronizers results in violations of most assertions, the lack of a receiver synchronizer does not cause any violations of <code>as_no_blocked_transfer</code>. Missing the receiver synchronizer does not affect the sender's ability to assert <code>busy</code> following an assertion of <code>send</code> since the sender state flip-flop is protected from becoming metastable by the presence of the sender synchronizer. This demonstrates an important feature of the proposed workflow: the ability to correctly identify correct behavior. As mentioned in <a href="overview">Overview</a>, false positives are a major challenge in CDC verification and a good CDC verification tool must be just as capable of recognizing when issues are <em>not</em> present, even if standard design practices are not followed.</p>
+        </div>
+      </div>
+      <footer class="demo-footer mdl-mini-footer">
+        <div class="mdl-mini-footer--left-section">
+          <ul class="mdl-mini-footer--link-list">
+          </ul>
+        </div>
+      </footer>
+      </main>
+    </div>
+    <script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
+    <script>
+    document.body.innerHTML = document.body.innerHTML.replace(/xprova/g, "<span class='toolname'>xprova</span>");
+    </script>
+  </body>
+</html>

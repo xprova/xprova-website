@@ -1,0 +1,84 @@
+h4 {
+  margin-top: 40px;
+  line-height: 200%;
+  border-bottom: solid 1px #dddddd;
+}
+
+a {
+  color: blue;
+}
+
+img {
+  display: block;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+code {
+  background-color: #eeeeee;
+  border: solid 1px #dddddd;
+  color: #222222;
+  border-radius: 4px;
+  padding: 2px;
+  font-size: 9pt;
+}
+
+.pass {
+  background-color: #CDEB8B;
+  border: solid 1px #008C00;
+  color: #008C00;
+  border-radius: 4px;
+  padding: 2px;
+  font-size: 9pt;
+  font-family: monospace;
+}
+
+.fail {
+  background-color: #f4bebe;
+  border: solid 1px #990000;
+  color: #990000;
+  border-radius: 4px;
+  padding: 2px;
+  font-size: 9pt;
+  font-family: monospace;
+}
+
+.mytable td,
+.mytable th {
+  text-align: center;
+}
+
+.mytable {
+  margin-bottom: 20px;
+}
+
+.mytable,
+.mytable td {
+  border: solid 1px #dddddd;
+  border-collapse: collapse;
+  padding: 10px;
+}
+
+.mytable th {
+  padding: 20px;
+}
+
+svg {
+  -webkit-font-smoothing: antialiased;/* -moz-font-smoothing: antialiased; - No longer available in FF */
+  font-smoothing: antialiased;
+}
+
+a {
+  color: #0074D9;
+}
+
+.toolname {
+  font-family: monospace;
+  color: black;
+  /* background-color: #eeeeff; */
+  border-bottom: solid 2px pink;
+  border-radius: 2px;
+  padding: 2px;
+  font-weight: bold;
+}

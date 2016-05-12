@@ -1,0 +1,131 @@
+<!doctype html>
+<!--
+Material Design Lite
+Copyright 2015 Google Inc. All rights reserved.
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+https://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="an EDA tool for clock domain crossing verification">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>xprova</title>
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Material Design Lite">
+    <link rel="apple-touch-icon-precomposed" href="images/ios-desktop.png">
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
+    <meta name="msapplication-TileColor" content="#3372DF">
+    <!-- SEO: If your mobile URL is different from the desktop URL, add a canonical link to the desktop page https://developers.google.com/webmasters/smartphone-sites/feature-phones -->
+    <!--
+    <link rel="canonical" href="http://www.example.com/">
+    -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.teal-red.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/mystyle.css">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+  </head>
+  <body>
+    <div class="demo-layout mdl-layout mdl-layout--fixed-header mdl-js-layout mdl-color--grey-100">
+      <div class="demo-ribbon"></div>
+      <main class="demo-main mdl-layout__content">
+      <div class="demo-container mdl-grid">
+        <div class="mdl-cell mdl-cell--2-col mdl-cell--hide-tablet mdl-cell--hide-phone"></div>
+        <div class="demo-content mdl-color--white mdl-shadow--4dp content mdl-color-text--grey-800 mdl-cell mdl-cell--8-col">
+           <center>
+          <h3 style='display: inline;'>xprova</h3>
+          <h3 style='display: inline; margin-left: 0px; color: gray; font-size: 20px; font-family: "Open Sans", sans-serif;'> - an EDA tool for clock domain crossing verification</h3>
+          <div style='display: block; height: 40px;'></div>
+
+            <button class="mdl-button mdl-js-button" onclick="location.href='overview';">
+              Overview
+            </button>
+            -
+            <button class="mdl-button mdl-js-button" onclick="location.href='formal';">
+              Formal Verification
+            </button>
+            -
+            <button class="mdl-button mdl-js-button" onclick="location.href='example';">
+              Case Example
+            </button>
+            -
+            <button class="mdl-button mdl-js-button" onclick="location.href='contact';">
+              Contact
+            </button>
+          </center>
+          <h4 id="introduction">Introduction</h4>
+          <p>This website describes a novel EDA tool (xprova) and associated methodology for verifying Clock Domain Crossing (CDC) circuits.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a> We presented the methodology and a demo of xprova at DATE2016 and are now collecting feedback from industrial partners to drive the development of the tool forward.</p>
+          <p>The contents of this website are based on the following resources which may be downloaded for further details:</p>
+          <ul>
+          <li>DATE 2016 Paper (PDF) : <a href="./downloads/cdc_verification_date2016.pdf">Local Download</a> or from <a href="http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=7459466">IEEE Xplore</a></li>
+          <li><a href="./downloads/date2016_demo_portrait_ver3.pdf">DATE 2016 University Booth Poster (PDF)</a></li>
+          <li><a href="./downloads/date2016_formal_verification.pptx">DATE 2016 Talk Slides (PowerPoint)</a></li>
+          </ul>
+          <h4 id="the-basic-idea">The Basic Idea</h4>
+          <p>The main difficulty with verifying and debugging CDC logic is that metastability and several other CDC issues <em>can not be observed in digital simulation</em>. Ever since CDC verification tools were first developed in the early 2000s, the conventional approach to CDC verification has been to check designs against lists of structural and functional &quot;rules of thumb&quot; (e.g. using synchronizers to re-time asynchronous control signals safely) and print warnings when violations are detected. This approach is safe but reports a considerably large number of false positives.<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a> <a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a></p>
+          <p>xprova circumvents this and other limitations of conventional CDC verification by targetting the root cause at the heart of CDC verification trouble: the invisibility of metastability and other CDC issues in digital simulation. The tool transforms a gate-level netlist into an &quot;augmented&quot; netlist that is capable of simulating metastability and other CDC issues. The augmented netlist can be used in testbench or formal verification to identify and debug CDC failures in a straight-forward and intuitive fashion.</p>
+          <p><img src='../figures/fig_overview.svg' style='width: 65%;'/></p>
+          <h4 id="why-is-it-better">Why is it better?</h4>
+          <ol style="list-style-type: decimal">
+          <li><p><strong>Fewer False Positives</strong>: the tool avoids the need to use conservative structural and functional heuristics to report when issues <em>may</em> be present. This reduces false positive warnings and saves valuable verification time.</p></li>
+          <li><p><strong>Zero Configuration</strong>: The tool does not require the designer to specify how their design is intended to work (e.g. what synchronization scheme or handshaking protocol is needed) or to specify exceptions to typical design patterns (e.g. when synchronization is not needed because, say, crossover signals carry configuration bits which do not change during runtime).</p></li>
+          <li><p><strong>Applicable to Non-standard Design Cases</strong>: The tool is not limited to stereotypical design patterns and enables designers to explore arbitrary design ideas including those that violate safe design practices.</p></li>
+          <li><p><strong>Capable of Demonstrating Failure Consequences and Mechanics</strong>: Conventional tools have little/no support for demonstrating <em>how</em> designs may fail due to CDC issues. Combining our tool with formal verification yields a very powerful issue identification and debugging tool that allows designers to trace the root causes of CDC failures in signal waveforms.</p></li>
+          </ol>
+          <h4 id="how-does-it-work">How does it work?</h4>
+          <p>The netlist transformation applied by xprova consists of two steps:</p>
+          <ol style="list-style-type: decimal">
+          <li><p><strong>Flip-flops are replaced with models</strong> that can simulate (a) setup/hold time violations, (b) non-deterministic inputs/outputs and (c) prolonged clk- to-q delays.</p></li>
+          <li><p><strong>Additional combinational gates are added</strong> to simulate the transfer of timing violations between FF models.</p></li>
+          </ol>
+          <p>We found that simulating the onset, logical masking, non-determinism and propagation of metastable states is sufficient to model a wide variety of CDC design issues. Our initial verification experiments on a number of test circuits demonstrated that this approach is inherently capable of recognizing several CDC design issues including:</p>
+          <ol style="list-style-type: decimal">
+          <li>Missing synchronizers</li>
+          <li>Data corruption</li>
+          <li>Non-deterministic synchronization latency</li>
+          <li>Glitch formation in crossover logic</li>
+          <li>Path reconvergence</li>
+          </ol>
+          <p>Have a look at the <a href="formal">Formal Verification</a> section to see how xprova can be integrated into a formal verification flow to idenfity and debug CDC issues.</p>
+          <div style="display: block; height: 40px;">
+          
+          </div>
+          <div class="footnotes">
+          <hr />
+          <ol>
+          <li id="fn1"><p>Tarawneh, Ghaith, Andrey Mokhov, and Alex Yakovlev. &quot;<a href="http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=7459466">Formal verification of clock domain crossing using gate-level models of metastable flip-flops.</a>&quot; 2016 Design, Automation &amp; Test in Europe Conference &amp; Exhibition (DATE). IEEE, 2016.<a href="#fnref1">↩</a></p></li>
+          <li id="fn2"><p>Sarwary, Shaker. &quot;<a href="http://www.eetimes.com/document.asp?doc_id=1276024">Solving the toughest problems in CDC analysis.</a>&quot; EE Times August 28 (2006).<a href="#fnref2">↩</a></p></li>
+          <li id="fn3"><p>Lee, Youngchan, et al. &quot;<a href="http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=6407123&amp;tag=1">Millions to thousands issues through knowledge based SoC CDC Verification.</a>&quot; SoC Design Conference (ISOCC), 2012 International. IEEE, 2012.<a href="#fnref3">↩</a></p></li>
+          </ol>
+          </div>
+        </div>
+      </div>
+      <footer class="demo-footer mdl-mini-footer">
+        <div class="mdl-mini-footer--left-section">
+          <ul class="mdl-mini-footer--link-list">
+          </ul>
+        </div>
+      </footer>
+      </main>
+    </div>
+    <script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
+    <script>
+    document.body.innerHTML = document.body.innerHTML.replace(/xprova/g, "<span class='toolname'>xprova</span>");
+    </script>
+  </body>
+</html>

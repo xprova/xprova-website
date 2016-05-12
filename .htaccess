@@ -1,0 +1,5 @@
+DirectoryIndex html/overview.htm
+
+RewriteEngine on
+
+RewriteRule ^([A-Za-z0-9]+)/?$ /html/$1.htm
