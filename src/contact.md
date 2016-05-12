@@ -1,4 +1,4 @@
-% Novel EDA Tool for Clock Domain Crossing (CDC) Verification
+% Contact
 % Ghaith Tarawneh
 % 28/4/2016
 
