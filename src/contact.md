@@ -9,9 +9,11 @@ to CDC verification and are happy to hear from you. If you've found anything
 on this website interesting please get in touch and let us know what you
 think.
 
-At the moment xprova is still in active development and is not yet available
-online. If you would like to be notified when this changes please email and
-we'll keep you posted.
+At the moment Xprova is still in active development and is not yet available
+for general use. If you'd like to have a look at the tool's source code or
+attempt to build it, have a look at the instructions in
+[Download](download.htm). Feel free to drop me an email if you'd like to stay
+posted and be notified when a release version becomes available.
 
 <ul class="demo-list-three mdl-list">
 <li class="mdl-list__item mdl-list__item--three-line">

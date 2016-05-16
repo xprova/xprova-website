@@ -4,9 +4,9 @@
 
 #### Introduction
 
-This website describes a novel EDA tool (xprova) and associated
+This website describes a novel EDA tool (Xprova) and associated
 methodology for verifying Clock Domain Crossing (CDC) circuits.[^ref_c] We
-presented the methodology and a demo of xprova at DATE2016 and are now
+presented the methodology and a demo of Xprova at DATE2016 and are now
 collecting feedback from industrial partners to drive the development of the
 tool forward.
 
@@ -28,7 +28,7 @@ using synchronizers to re-time asynchronous control signals safely) and print
 warnings when violations are detected. This approach is safe but reports a
 considerably large number of false positives.[^ref_a] [^ref_b]
 
-xprova circumvents this and other limitations of conventional CDC verification
+Xprova circumvents this and other limitations of conventional CDC verification
 by targetting the root cause at the heart of CDC verification trouble: the
 invisibility of metastability and other CDC issues in digital simulation. The
 tool transforms a gate-level netlist into an "augmented" netlist that is
@@ -62,7 +62,7 @@ trace the root causes of CDC failures in signal waveforms.
 
 #### How does it work?
 
-The netlist transformation applied by xprova consists of two steps:
+The netlist transformation applied by Xprova consists of two steps:
 
 1. **Flip-flops are replaced with models** that can simulate (a) setup/hold
 time violations, (b) non-deterministic inputs/outputs and (c) prolonged clk-
@@ -83,7 +83,7 @@ several CDC design issues including:
 4. Glitch formation in crossover logic
 5. Path reconvergence
 
-Have a look at the [Formal Verification](formal.htm) section to see how xprova
+Have a look at the [Formal Verification](formal.htm) section to see how Xprova
 can be integrated into a formal verification flow to idenfity and debug CDC
 issues.
 
